@@ -118,3 +118,10 @@ create index idx_u_email on users(email);
 create index idx_h_city on hotels(city);
 create index idx_r_type on rooms(room_type_id);
 create index idx_b_guest on bookings(guest_id);
+
+-- ЧАСТИЧНЫЙ ИНДЕКС (Для быстрого поиска только свободных комнат)
+create index idx_rooms_available_partial on rooms(id) 
+where is_available = true;
+
+-- СОСТАВНОЙ ИНДЕКС (Для поиска отелей в городе с фильтром/сортировкой по рейтингу)
+create index idx_hotels_city_rating_composite on hotels(city, rating);
