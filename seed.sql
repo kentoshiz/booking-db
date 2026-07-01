@@ -1,5 +1,5 @@
 -- 1. Генерируем 50 000 пользователей (смесь гостей и операторов)
-insert into users (name, email, role)
+insert into guests (name, email, role)
 select 
     'User_' || i,
     'user_' || i || '@testmail.com',
@@ -16,7 +16,7 @@ select
     'Hotel_' || i,
     (array['Москва', 'Санкт-Петербург', 'Казань', 'Сочи', 'Новосибирск'])[floor(random() * 5) + 1],
     round((3.0 + random() * 2.0)::numeric, 1),
-    (select id from users where role = 'operator' order by random() limit 1)
+    (select id from guests where role = 'operator' order by random() limit 1)
 from generate_series(1, 50000) as i
 limit 5000; -- привязываем к случайным операторам
 
@@ -61,7 +61,7 @@ insert into bookings (id, check_in, guest_id, room_id, check_out, status, price_
 select 
     i as id,
     gen_date as check_in,
-    (select id from users where role = 'guest' limit 1 offset floor(random() * 40000)) as guest_id,
+    (select id from guests where role = 'guest' limit 1 offset floor(random() * 40000)) as guest_id,
     (select id from rooms limit 1 offset floor(random() * 150000)) as room_id,
     gen_date + (floor(random() * 7) + 1)::int as check_out,
     (array['confirmed', 'confirmed', 'cancelled', 'pending'])[floor(random() * 4) + 1] as status,

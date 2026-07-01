@@ -6,7 +6,7 @@ create extension if not exists btree_gist;
 
 
 -- Таблица пользователей
-create table users (
+create table guests (
     id serial primary key,
     name varchar(100) not null,
     email varchar(100) unique not null,
@@ -19,7 +19,7 @@ create table hotels (
     name varchar(150) not null,
     city varchar(100) not null,
     rating numeric(2, 1) check (rating >= 0.0 and rating <= 5.0),
-    operator_id int references users(id) on delete set null
+    operator_id int references guests(id) on delete set null
 );
 
 -- Типы номеров и базовая цена
@@ -57,7 +57,7 @@ create table room_amenities (
 create table bookings (
     id int not null,
     check_in date not null,
-    guest_id int references users(id) on delete cascade,
+    guest_id int references guests(id) on delete cascade,
     room_id int references rooms(id) on delete cascade,
     check_out date not null,
     status varchar(20) not null default 'pending' check (status in ('pending', 'confirmed', 'cancelled')),
@@ -114,7 +114,7 @@ create table audit_log (
 
 
 -- Базовые индексы для оптимизации
-create index idx_u_email on users(email);
+create index idx_u_email on guests(email);
 create index idx_h_city on hotels(city);
 create index idx_r_type on rooms(room_type_id);
 create index idx_b_guest on bookings(guest_id);
