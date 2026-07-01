@@ -241,8 +241,8 @@ begin
         values (
             'bookings',
             'UPDATE_STATUS',
-            jsonb_build_object('id', old.id, 'status', old.status)::text,
-            jsonb_build_object('id', new.id, 'status', new.status, 'room_id', new.room_id)::text,
+            jsonb_build_object('id', old.id, 'status', old.status),
+            jsonb_build_object('id', new.id, 'status', new.status, 'room_id', new.room_id),
             current_user
         );
     end if;
@@ -271,8 +271,8 @@ begin
         values (
             'room_types',
             'UPDATE_PRICE',
-            jsonb_build_object('id', old.id, 'price', old.base_price)::text,
-            jsonb_build_object('id', new.id, 'price', new.base_price)::text,
+            jsonb_build_object('id', old.id, 'price', old.base_price),
+            jsonb_build_object('id', new.id, 'price', new.base_price),
             current_user
         );
     end if;
